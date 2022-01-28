@@ -7,7 +7,8 @@ class FileInfo {
 	public $lastModified;
 	public $size;
 
-	function FileInfo($fullname) {
+	
+	function __construct($fullname) {
         $this->fullname = $fullname;
 
         $bytes = filesize($this->fullname);

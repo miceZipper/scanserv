@@ -1,7 +1,8 @@
 <?php
 include("Config.php");
 
-class System {
+class SystemScan {
+
 	private static function Write($k, $v) {
 		if (is_array($v)) {
 			foreach($v as $e) {
@@ -38,19 +39,19 @@ class System {
 
 	public static function ScannerDevices() {
 		$cmd = Config::Scanimage . " -L";
-		System::Execute($cmd, $output, $ret);
+		SystemScan::Execute($cmd, $output, $ret);
 		return $output;
 	}
 	
 	public static function ScannerOptions() {
 	    $cmd = Config::Scanimage . " -A";	
-	    System::Execute($cmd, $output, $ret);
+	    SystemScan::Execute($cmd, $output, $ret);
 		return $output;
 	}
     
     public static function HasConvert() {
 	    $cmd = "which " . Config::Convert;	
-	    System::Execute($cmd, $output, $ret);
+	    SystemScan::Execute($cmd, $output, $ret);
 		return count($output) > 0;
 	}
 }

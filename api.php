@@ -16,14 +16,14 @@ header('Content-Type: application/json');
 class Api {
 	public static function HandleCmdlineRequest($request) {
 		$cmd = $request->data;
-		System::Execute($cmd, $output, $ret);
+		SystemScan::Execute($cmd, $output, $ret);
 		return array("cmd" => $cmd, "output" => $output, "ret" => $ret);
 	}
 
 	public static function HandlePreviewRequest($request) {
 		$wait=' -size 423x584 -fill white -background "#3C98E4" -pointsize 30 -gravity North label:"\nPlease wait..." ';
 		$cmd = Config::Convert.' '.$wait.' '.Config::PreviewDirectory.'preview.jpg';
-		System::Execute($cmd, $output, $ret);
+		SystemScan::Execute($cmd, $output, $ret);
         
 		$clientRequest = $request->data;
 		
@@ -55,7 +55,7 @@ class Api {
 
 	public static function HandlePreviewToJpegRequest() {
 		$cmd = Config::PreviewFilter.' '.Config::PreviewDirectory.'preview.jpg  <'.Config::PreviewDirectory.'preview.tif';
-		System::Execute($cmd, $output, $ret);
+		SystemScan::Execute($cmd, $output, $ret);
 		$jpg=file_get_contents(Config::PreviewDirectory.'preview.jpg');
 		return array("cmd" => $cmd, "output" => $output, "ret" => $ret, "jpg" => base64_encode($jpg) );
 	}
@@ -93,7 +93,7 @@ class Api {
 	}
 
     public static function HandleFormatListRequest() {
-        if (!System::HasConvert()) return array(Format::OutputExtension);
+        if (!SystemScan::HasConvert()) return array(Format::OutputExtension);
         
         $formats = array(Format::BMP,
                          Format::JPG,
@@ -137,9 +137,9 @@ class Api {
 	}
     
     public static function HandleRefreshDevicesRequest() {
-		$devices = System::ScannerDevices();
+		$devices = SystemScan::ScannerDevices();
         file_put_contents(ScannerOptions::DEVICES_FILE, implode("\n", $devices));
-        $options = System::ScannerOptions();
+        $options = SystemScan::ScannerOptions();
         file_put_contents(ScannerOptions::OPTIONS_FILE, implode("\n", $options));
         return true;
 	}

@@ -2,6 +2,8 @@
 include("IScanner.php");
 include("ScanResponse.php");
 include_once("ScannerOptions.php");
+include_once("SystemScan.php");
+
 class Scanimage implements IScanner {
 	private function CommandLine($scanRequest) {
         $cmd = Config::Scanimage;
@@ -38,7 +40,7 @@ class Scanimage implements IScanner {
 		$scanResponse->errors = $scanRequest->Validate();
 		if (count($scanResponse->errors) == 0) {
 			$scanResponse->cmdline = $this->CommandLine($scanRequest);
-			System::Execute($scanResponse->cmdline, $scanResponse->output, $scanResponse->returnCode);
+			SystemScan::Execute($scanResponse->cmdline, $scanResponse->output, $scanResponse->returnCode);
 			$scanResponse->image = $scanRequest->outputFilepath;
 		}
 		return $scanResponse;
